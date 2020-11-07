@@ -21,6 +21,35 @@ const articleSchema = new mongoose.Schema({
 
 const Article =  mongoose.model("Article", articleSchema);
 
+app.get("/articles", function(req,res){
+    Article.find(function(err, articlesFound){
+        if(!err){
+            console.log(articlesFound);
+        }else{
+            console.log(err);
+        }
+    });
+});
+
+app.post("/articles", function(req,res){
+    const articleTitle = req.body.title;
+    const articleContent = req.body.content;
+
+    const newArticle = new Article({
+        title: articleTitle,
+        content: articleContent
+    });
+
+    newArticle.save(function(err){
+        if(!err){
+            res.send("All good!");
+        }else{
+            res.send(err);
+        }
+    });
+
+});
+
 app.listen(3000,function(){
     console.log("Server set on port 3000!");
 });
