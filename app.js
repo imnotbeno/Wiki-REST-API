@@ -14,6 +14,13 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 //app.use(express.static("public"));
 
+const articleSchema = new mongoose.Schema({
+    title: String,
+    content: String
+});
+
+const Article =  mongoose.model("Article", articleSchema);
+
 app.listen(3000,function(){
     console.log("Server set on port 3000!");
 });
