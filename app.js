@@ -54,22 +54,38 @@ app.post("/articles", function (req, res) {
 
 //Requests targeting specific articles
 
-app.route("/articles/:articleTitle").get(function (req, res) {
-  Article.findOne({ title: req.params.articleTitle }, function (
-    err,
-    titlesFound
-  ) {
-    if (!err) {
-      if (titlesFound) {
-        res.send(titlesFound);
+app
+  .route("/articles/:articleTitle")
+
+  .get(function (req, res) {
+    Article.findOne({ title: req.params.articleTitle }, function (
+      err,
+      titlesFound
+    ) {
+      if (!err) {
+        if (titlesFound) {
+          res.send(titlesFound);
+        } else {
+          res.send("No articles matching that title were found!");
+        }
       } else {
-        res.send("No articles matching that title were found!");
+        res.send(err);
       }
-    } else {
-      res.send(err);
-    }
+    });
+  })
+
+  .put(function (req, res) {
+    Article.update(
+      { title: req.params.articleTitle },
+      { title: req.body.title, content: req.body.content },
+      { overwrite: true },
+      function (err) {
+        if (!err) {
+          res.send("Title/Content was successfully changed!");
+        }
+      }
+    );
   });
-});
 
 app.delete("/articles", function (req, res) {
   Article.deleteMany(function (err) {
