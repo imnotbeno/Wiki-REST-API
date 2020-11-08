@@ -50,6 +50,21 @@ app.post("/articles", function(req,res){
 
 });
 
+//Requests targeting specific articles
+
+app.route("/articles/:articleTitle")
+.get(function(req,res){
+
+    Article.findOne({title: req.params}, function(err, titlesFound){
+        if(!err){
+            console.log(titlesFound);
+        }else{
+            console.log(err);
+        }
+    });
+});
+
+
 app.delete("/articles", function(req,res){
     Article.deleteMany(function(err){
         if(!err){
